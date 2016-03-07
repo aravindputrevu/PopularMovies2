@@ -7,9 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
-import android.widget.ListAdapter;
 
 
 public class MainActivity extends AppCompatActivity{
@@ -24,6 +22,10 @@ public class MainActivity extends AppCompatActivity{
 
         setContentView(R.layout.activity_main);
 
+        if(findViewById(R.id.movie_detail_container) != null){
+            mTabletMode=true;
+        }
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setTitle(getString(R.string.toolBarTitle));
         setSupportActionBar(toolbar);
@@ -37,7 +39,7 @@ public class MainActivity extends AppCompatActivity{
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
         final MoviePagerAdapter adapter = new MoviePagerAdapter
-                (getSupportFragmentManager(), tabLayout.getTabCount());
+                (getSupportFragmentManager(), tabLayout.getTabCount(),mTabletMode);
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -57,21 +59,20 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
-        if(findViewById(R.id.movie_detail_container) != null){
-            mTabletMode=true;
-            if(savedInstanceState == null){
+        if(mTabletMode) {
+            if (savedInstanceState == null) {
                 MovieDetailsFragment mf = new MovieDetailsFragment();
-                /*GridView gridView = (GridView)findViewById(R.id.movie_grid);
+                GridView gridView = (GridView) findViewById(R.id.movie_grid);
                 MovieAdapter movieAdapter = (MovieAdapter) gridView.getAdapter();
+                Movie m = movieAdapter.getItem(0);
 
                 Bundle bundle = new Bundle();
-                bundle.putParcelable("movie_object",movieAdapter.getItem(0));
+                bundle.putParcelable("movie_object", m);
                 mf.setArguments(bundle);
-                */getSupportFragmentManager().beginTransaction().add(R.id.movie_detail_container, mf,MOVIE_DETAIL_FRAG_TAG).commit();
+
+                getSupportFragmentManager().beginTransaction().add(R.id.movie_detail_container, mf, MOVIE_DETAIL_FRAG_TAG).commit();
 
             }
-        }else{
-            mTabletMode=false;
         }
     }
 

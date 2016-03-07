@@ -47,8 +47,8 @@ public class MovieDetailsFragment extends Fragment implements View.OnClickListen
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.content_detail, container, false);
-        movie = getActivity().getIntent().getParcelableExtra(getString(R.string.moveObject));
-//        movie = (Movie)this.getArguments().get("movie_object");
+       // movie = getActivity().getIntent().getParcelableExtra(getString(R.string.moveObject));
+         movie = (Movie)this.getArguments().get("movie_object");
         if(movie != null){
             String trailerURL = String.format(Util.constructAPIURL(Constants.FETCH_MOVIE_TRAILERS), movie.getId());
             String reviewURL = String.format(Util.constructAPIURL(Constants.FETCH_MOVIE_REVIEWS), movie.getId());

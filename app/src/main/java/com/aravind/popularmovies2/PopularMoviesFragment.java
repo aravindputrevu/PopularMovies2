@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class PopularMoviesFragment extends Fragment {
+public class PopularMoviesFragment extends Fragment implements MovieClickedCallback{
 
     private static final String LOG = PopularMoviesFragment.class.getSimpleName();
 
@@ -50,20 +50,48 @@ public class PopularMoviesFragment extends Fragment {
         callAPI(getActivity(), gridView, Util.constructAPIURL(Constants.SORT_BY_POPULARITY, "1"));
         gridView.setAdapter(movieAdapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d("MovieAdapter", "Intent Started !!!");
-                Movie movieObject = (Movie) movieAdapter.getItem(position);
-                Intent i = new Intent();
-                i.setClassName("com.aravind.popularmovies2", "com.aravind.popularmovies2.MovieDetailsActivity");
-                i.putExtra(getString(R.string.moveObject), movieObject);
-                startActivity(i);
+                onMovieClicked(position);
             }
         });
         return rootView;
     }
+
+    @Override
+    public void onMovieClicked(int position) {
+
+        boolean isTablet = (boolean)this.getArguments().get("isTablet");
+        if(!isTablet){
+            Log.d("MovieAdapter", "Intent Started !!!");
+            Movie movieObject = (Movie) movieAdapter.getItem(position);
+            Intent i = new Intent();
+            i.setClassName("com.aravind.popularmovies2", "com.aravind.popularmovies2.MovieDetailsActivity");
+            i.putExtra(getString(R.string.moveObject), movieObject);
+            startActivity(i);
+        }
+        else{
+            // It's a tablet, so update the movie detail fragment
+            Bundle args = new Bundle();
+            // Pass the selected Movie object to the MovieDetailFragment
+            args.putParcelable("movie_object", movieAdapter.getItem(position));
+            MovieDetailsFragment movieDetailsFragment = new MovieDetailsFragment();
+            movieDetailsFragment.setArguments(args);
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.movie_detail_container, movieDetailsFragment, "DFTAG")
+                    .commit();
+        }
+    }
+
+    /*@Override
+    public void onStart() {
+        super.onStart();
+        boolean isTablet = (boolean)this.getArguments().get("isTablet");
+        if(isTablet) {
+            //set first item by default
+            onMovieClicked(0);
+        }
+    }*/
 
     public class CallMovieDBAPI extends AsyncTask<String, Void, List<Movie>> {
 
