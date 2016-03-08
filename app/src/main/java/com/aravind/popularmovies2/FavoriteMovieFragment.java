@@ -22,13 +22,11 @@ import java.util.Map;
 public class FavoriteMovieFragment extends Fragment {
 
     private static final String LOG = FavoriteMovieFragment.class.getSimpleName();
-
+    GridView gridView;
     private MovieAdapter movieAdapter;
     private List<Movie> movieList = new ArrayList<Movie>();
-    GridView gridView;
 
-    public FavoriteMovieFragment()
-    {
+    public FavoriteMovieFragment() {
 
     }
 
@@ -36,7 +34,7 @@ public class FavoriteMovieFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        Log.d("FavoriteMovieFragment","In Fragment OnCreateView");
+        Log.d("FavoriteMovieFragment", "In Fragment OnCreateView");
         View rootView = inflater.inflate(R.layout.content_main, container, false);
         gridView = (GridView) rootView.findViewById(R.id.movie_grid);
         populateFavMovieListFromPrefs();
@@ -48,12 +46,7 @@ public class FavoriteMovieFragment extends Fragment {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d("MovieAdapter", "Intent Started !!!");
-                Movie movieObject =  movieAdapter.getItem(position);
-                Intent i = new Intent();
-                i.setClassName("com.aravind.popularmovies2", "com.aravind.popularmovies2.MovieDetailsActivity");
-                i.putExtra(getString(R.string.moveObject), movieObject);
-                startActivity(i);
+                ((MovieClickedCallback) getActivity()).onMovieClicked(position, movieAdapter);
             }
         });
         return rootView;
@@ -64,10 +57,10 @@ public class FavoriteMovieFragment extends Fragment {
      */
     private void populateFavMovieListFromPrefs() {
         SharedPreferences mPref = getActivity().getSharedPreferences("myprefs", Context.MODE_PRIVATE);
-        Map<String,String> movieMap =  (Map<String,String>)mPref.getAll();
+        Map<String, String> movieMap = (Map<String, String>) mPref.getAll();
         Gson gson = new Gson();
-        for(Map.Entry<String,String> entry : movieMap.entrySet()){
-            Movie movie = gson.fromJson(entry.getValue(),Movie.class);
+        for (Map.Entry<String, String> entry : movieMap.entrySet()) {
+            Movie movie = gson.fromJson(entry.getValue(), Movie.class);
             movieList.add(movie);
         }
     }

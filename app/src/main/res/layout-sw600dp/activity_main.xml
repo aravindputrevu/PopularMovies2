@@ -14,8 +14,7 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="10"
+            android:layout_height="75dp"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             />
@@ -33,7 +32,8 @@
         <android.support.v4.view.ViewPager
             android:id="@+id/pager"
             android:layout_width="363dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="80"
             android:layout_below="@id/tab_layout"/>
     </LinearLayout>
 

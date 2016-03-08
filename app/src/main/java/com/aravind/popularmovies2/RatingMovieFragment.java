@@ -27,64 +27,54 @@ import java.util.List;
 public class RatingMovieFragment extends Fragment {
 
     private static final String LOG = PopularMoviesFragment.class.getSimpleName();
-
+    GridView gridView;
     private MovieAdapter movieAdapter;
     private List<Movie> movieList = new ArrayList<Movie>();
-    GridView gridView;
 
-    public RatingMovieFragment()
-    {
+    public RatingMovieFragment() {
 
     }
 
-    public void callAPI(Activity activity,GridView view,String url)
-    {
-        new CallMovieDBAPI(activity,view).execute(url);
+    public void callAPI(Activity activity, GridView view, String url) {
+        new CallMovieDBAPI(activity, view).execute(url);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        Log.d("RatingMovieFragment","In Fragment OnCreateView");
+        Log.d("RatingMovieFragment", "In Fragment OnCreateView");
         View rootView = inflater.inflate(R.layout.content_main, container, false);
         gridView = (GridView) rootView.findViewById(R.id.movie_grid);
         callAPI(getActivity(), gridView, Util.constructAPIURL(Constants.SORT_BY_RATING, "1"));
         gridView.setAdapter(movieAdapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d("MovieAdapter", "Intent Started !!!");
-                Movie movieObject =  movieAdapter.getItem(position);
-                Intent i = new Intent();
-                i.setClassName("com.aravind.popularmovies2", "com.aravind.popularmovies2.MovieDetailsActivity");
-                i.putExtra(getString(R.string.moveObject), movieObject);
-                startActivity(i);
+                ((MovieClickedCallback) getActivity()).onMovieClicked(position, movieAdapter);
             }
         });
+
         return rootView;
     }
 
 
     public class CallMovieDBAPI extends AsyncTask<String, Void, List<Movie>> {
 
+        ProgressDialog dialog;
         private Activity activity;
         private GridView gridView;
-        ProgressDialog dialog;
+
+        public CallMovieDBAPI(Activity activity, GridView gridView) {
+            this.activity = activity;
+            this.gridView = gridView;
+        }
 
         @Override
         protected void onPreExecute() {
             dialog = new ProgressDialog(getActivity());
             dialog.setMessage(activity.getString(R.string.progressDialogText));
             dialog.show();
-        }
-
-        public CallMovieDBAPI(Activity activity, GridView gridView)
-        {
-            this.activity=activity;
-            this.gridView=gridView;
         }
 
         @Override
@@ -101,9 +91,9 @@ public class RatingMovieFragment extends Fragment {
                 jsonResponse = getJsonObject(in);
                 movieList = JsonParser.parse(jsonResponse);
 
-            } catch (Exception e ) {
+            } catch (Exception e) {
 
-                Log.e("CallMovieDBAPI","Exception occurred in AsyncTask - CallMovieDBAPI",e);
+                Log.e("CallMovieDBAPI", "Exception occurred in AsyncTask - CallMovieDBAPI", e);
             }
 
             return movieList;
@@ -123,12 +113,11 @@ public class RatingMovieFragment extends Fragment {
         }
 
         private String getJsonObject(InputStream in) throws IOException {
-            String line=null;
+            String line = null;
             StringBuilder sb = new StringBuilder();
             BufferedReader reader = new BufferedReader(new InputStreamReader(in, "UTF-8"), 8);
 
-            while ((line = reader.readLine()) != null)
-            {
+            while ((line = reader.readLine()) != null) {
                 sb.append(line + "\n");
             }
             return sb.toString();

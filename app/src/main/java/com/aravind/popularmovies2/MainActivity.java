@@ -1,16 +1,18 @@
 package com.aravind.popularmovies2;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.GridView;
 
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity implements MovieClickedCallback{
 
 
     boolean mTabletMode = false;
@@ -59,7 +61,7 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
-        if(mTabletMode) {
+        /*if(mTabletMode) {
             if (savedInstanceState == null) {
                 MovieDetailsFragment mf = new MovieDetailsFragment();
                 GridView gridView = (GridView) findViewById(R.id.movie_grid);
@@ -73,7 +75,7 @@ public class MainActivity extends AppCompatActivity{
                 getSupportFragmentManager().beginTransaction().add(R.id.movie_detail_container, mf, MOVIE_DETAIL_FRAG_TAG).commit();
 
             }
-        }
+        }*/
     }
 
     @Override
@@ -92,5 +94,28 @@ public class MainActivity extends AppCompatActivity{
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onMovieClicked(int position,MovieAdapter movieAdapter) {
+
+        if(!mTabletMode){
+            Log.d("MovieAdapter", "Intent Started !!!");
+            Movie movieObject = (Movie) movieAdapter.getItem(position);
+            Intent i = new Intent();
+            i.setClassName("com.aravind.popularmovies2", "com.aravind.popularmovies2.MovieDetailsActivity");
+            i.putExtra(getString(R.string.moveObject), movieObject);
+            startActivity(i);
+        }
+        else{
+            // It's a tablet, so update the movie detail fragment
+            Bundle args = new Bundle();
+            // Pass the selected Movie object to the MovieDetailFragment
+            args.putParcelable("movie_object", movieAdapter.getItem(position));
+            MovieDetailsFragment movieDetailsFragment = new MovieDetailsFragment();
+            movieDetailsFragment.setArguments(args);
+            this.getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.movie_detail_container, movieDetailsFragment, "DFTAG")
+                    .commit();
+        }
+    }
 
 }
