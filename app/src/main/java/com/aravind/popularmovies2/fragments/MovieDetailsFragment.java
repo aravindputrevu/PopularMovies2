@@ -1,4 +1,4 @@
-package com.aravind.popularmovies2;
+package com.aravind.popularmovies2.fragments;
 
 
 import android.app.Activity;
@@ -23,6 +23,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aravind.popularmovies2.Constants;
+import com.aravind.popularmovies2.R;
+import com.aravind.popularmovies2.model.Movie;
+import com.aravind.popularmovies2.model.Review;
+import com.aravind.popularmovies2.model.YTBTrailer;
+import com.aravind.popularmovies2.util.JsonParser;
+import com.aravind.popularmovies2.util.Util;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
@@ -37,11 +44,11 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
- * Created by DELL on 23-Feb-16.
+ * Created by Aravind on 23-Feb-16.
  */
 public class MovieDetailsFragment extends Fragment implements View.OnClickListener {
 
-    Movie movie;
+    private Movie movie;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -95,13 +102,19 @@ public class MovieDetailsFragment extends Fragment implements View.OnClickListen
             ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             LinearLayout linearLayout = (LinearLayout) rootView.findViewById(R.id.ytb_linear_layout);
 
-            for (YTBTrailer trailer : movie.getTrailerList()) {
-                ImageView ytbTrailerIV = new ImageView(getActivity());
-                ytbTrailerIV.setLayoutParams(layoutParams);
-                ytbTrailerIV.setImageResource(R.drawable.ytb_ic);
-                ytbTrailerIV.setTag(YTBTrailer.getUrl(trailer));
-                ytbTrailerIV.setOnClickListener(this);
-                linearLayout.addView(ytbTrailerIV);
+            if (movie.getTrailerList().size() > 0) {
+                for (YTBTrailer trailer : movie.getTrailerList()) {
+                    ImageView ytbTrailerIV = new ImageView(getActivity());
+                    ytbTrailerIV.setLayoutParams(layoutParams);
+                    ytbTrailerIV.setImageResource(R.drawable.ytb_ic);
+                    ytbTrailerIV.setTag(YTBTrailer.getUrl(trailer));
+                    ytbTrailerIV.setOnClickListener(this);
+                    linearLayout.addView(ytbTrailerIV);
+                }
+            } else {
+                TextView noTrailerTV = new TextView(getActivity());
+                noTrailerTV.setText(R.string.no_trailer_found);
+                linearLayout.addView(noTrailerTV);
             }
 
 
@@ -125,13 +138,20 @@ public class MovieDetailsFragment extends Fragment implements View.OnClickListen
     }
 
     private void markAsFavorite(View view) {
-        SharedPreferences mPrefs = getActivity().getSharedPreferences("myprefs", Context.MODE_PRIVATE);
+        SharedPreferences mPrefs = getActivity().getSharedPreferences(Constants.SHARED_PREF_KEY, Context.MODE_PRIVATE);
         SharedPreferences.Editor prefsEditor = mPrefs.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(movie);
-        prefsEditor.putString(movie.getId(), json);
-        prefsEditor.apply();
-        Toast.makeText(getActivity().getApplicationContext(), R.string.fav_toast_string, Toast.LENGTH_LONG).show();
+        if (!mPrefs.contains(movie.getId())) {
+
+            Gson gson = new Gson();
+            String json = gson.toJson(movie);
+            prefsEditor.putString(movie.getId(), json);
+            prefsEditor.apply();
+            Toast.makeText(getActivity().getApplicationContext(), R.string.fav_toast_string, Toast.LENGTH_LONG).show();
+        } else {
+            prefsEditor.remove(movie.getId());
+            prefsEditor.apply();
+            Toast.makeText(getActivity().getApplicationContext(), "Movie removed from your favorites", Toast.LENGTH_LONG).show();
+        }
     }
 
     public class CallMovieDBAPI extends AsyncTask<String, Void, Movie> {
@@ -198,7 +218,7 @@ public class MovieDetailsFragment extends Fragment implements View.OnClickListen
             BufferedReader reader = new BufferedReader(new InputStreamReader(in, "UTF-8"), 8);
 
             while ((line = reader.readLine()) != null) {
-                sb.append(line + "\n");
+                sb.append(line).append("\n");
             }
             return sb.toString();
         }

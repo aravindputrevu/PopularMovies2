@@ -1,4 +1,4 @@
-package com.aravind.popularmovies2;
+package com.aravind.popularmovies2.model;
 
 
 import android.os.Parcel;
@@ -9,6 +9,18 @@ import java.util.List;
 
 public class Movie implements Parcelable {
 
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel in) {
+            return new Movie(in);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
     private String id;
     private String title;
     private String overview;
@@ -22,7 +34,21 @@ public class Movie implements Parcelable {
     private List<YTBTrailer> trailerList = new LinkedList<YTBTrailer>();
     private List<Review> reviewList = new LinkedList<Review>();
 
-    public Movie(){}
+    public Movie() {
+    }
+
+    protected Movie(Parcel in) {
+        id = in.readString();
+        title = in.readString();
+        overview = in.readString();
+        posterPath = in.readString();
+        backdropPath = in.readString();
+        releaseDate = in.readString();
+        popularity = in.readString();
+        rating = in.readString();
+        voteCount = in.readString();
+        voteAvg = in.readString();
+    }
 
     public String getId() {
         return id;
@@ -120,19 +146,6 @@ public class Movie implements Parcelable {
         this.reviewList = reviewList;
     }
 
-    protected Movie(Parcel in) {
-        id = in.readString();
-        title = in.readString();
-        overview = in.readString();
-        posterPath = in.readString();
-        backdropPath = in.readString();
-        releaseDate = in.readString();
-        popularity = in.readString();
-        rating = in.readString();
-        voteCount = in.readString();
-        voteAvg = in.readString();
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -152,17 +165,4 @@ public class Movie implements Parcelable {
         dest.writeString(voteAvg);
 
     }
-
-    @SuppressWarnings("unused")
-    public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
-        @Override
-        public Movie createFromParcel(Parcel in) {
-            return new Movie(in);
-        }
-
-        @Override
-        public Movie[] newArray(int size) {
-            return new Movie[size];
-        }
-    };
 }

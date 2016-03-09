@@ -1,21 +1,24 @@
-package com.aravind.popularmovies2;
+package com.aravind.popularmovies2.adapter;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-public class MoviePagerAdapter extends FragmentStatePagerAdapter{
+import com.aravind.popularmovies2.fragments.FavoriteMovieFragment;
+import com.aravind.popularmovies2.fragments.PopularMoviesFragment;
+import com.aravind.popularmovies2.fragments.RatingMovieFragment;
 
-    int mNumOfTabs;
-    boolean isTablet;
+public class MoviePagerAdapter extends FragmentStatePagerAdapter {
+
+    private int mNumOfTabs;
+    private boolean isTablet;
 
     public MoviePagerAdapter(FragmentManager fm, int NumOfTabs, boolean isTablet) {
         super(fm);
         this.mNumOfTabs = NumOfTabs;
         this.isTablet = isTablet;
     }
-
 
 
     @Override

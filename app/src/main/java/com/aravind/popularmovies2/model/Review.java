@@ -1,4 +1,4 @@
-package com.aravind.popularmovies2;
+package com.aravind.popularmovies2.model;
 
 /**
  * This class encapsulates Movie review details

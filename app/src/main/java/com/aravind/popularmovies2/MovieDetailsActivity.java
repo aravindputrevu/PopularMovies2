@@ -3,9 +3,9 @@ package com.aravind.popularmovies2;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-public class MovieDetailsActivity extends AppCompatActivity {
+import com.aravind.popularmovies2.fragments.MovieDetailsFragment;
 
-    Movie movie;
+public class MovieDetailsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -13,7 +13,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movie_details);
 
 
-        if(savedInstanceState == null){
+        if (savedInstanceState == null) {
             MovieDetailsFragment mf = new MovieDetailsFragment();
             Bundle args = new Bundle();
             args.putParcelable("movie_object", getIntent().getParcelableExtra(getString(R.string.moveObject)));
@@ -23,8 +23,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
         }
 
     }
-
-
 
 
 }

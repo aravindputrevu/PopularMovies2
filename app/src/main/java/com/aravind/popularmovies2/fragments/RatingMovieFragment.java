@@ -1,4 +1,4 @@
-package com.aravind.popularmovies2;
+package com.aravind.popularmovies2.fragments;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -12,6 +12,14 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import com.aravind.popularmovies2.Constants;
+import com.aravind.popularmovies2.MovieClickedCallback;
+import com.aravind.popularmovies2.R;
+import com.aravind.popularmovies2.adapter.MovieAdapter;
+import com.aravind.popularmovies2.model.Movie;
+import com.aravind.popularmovies2.util.JsonParser;
+import com.aravind.popularmovies2.util.Util;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -23,17 +31,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class PopularMoviesFragment extends Fragment {
+public class RatingMovieFragment extends Fragment {
 
     private static final String LOG = PopularMoviesFragment.class.getSimpleName();
-    GridView gridView;
+    private GridView gridView;
     private MovieAdapter movieAdapter;
     private List<Movie> movieList = new ArrayList<Movie>();
-    private boolean isTablet = false;
-    public PopularMoviesFragment() {
+
+    public RatingMovieFragment() {
+
     }
 
-    public void callAPI(Activity activity, GridView view, String url) {
+    private void callAPI(Activity activity, GridView view, String url) {
         new CallMovieDBAPI(activity, view).execute(url);
     }
 
@@ -41,21 +50,21 @@ public class PopularMoviesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        Log.d("PopularMovieFragment", "Fragment OnCreateView");
-        isTablet = (boolean)this.getArguments().get("isTablet");
+        Log.d("RatingMovieFragment", "In Fragment OnCreateView");
         View rootView = inflater.inflate(R.layout.content_main, container, false);
         gridView = (GridView) rootView.findViewById(R.id.movie_grid);
-        callAPI(getActivity(), gridView, Util.constructAPIURL(Constants.SORT_BY_POPULARITY, "1"));
+        callAPI(getActivity(), gridView, Util.constructAPIURL(Constants.SORT_BY_RATING, "1"));
         gridView.setAdapter(movieAdapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                 ((MovieClickedCallback) getActivity()).onMovieClicked(position, movieAdapter);
             }
         });
+
         return rootView;
     }
+
 
     public class CallMovieDBAPI extends AsyncTask<String, Void, List<Movie>> {
 
@@ -108,10 +117,6 @@ public class PopularMoviesFragment extends Fragment {
             movieAdapter = new MovieAdapter(activity, movieList);
             gridView.setAdapter(movieAdapter);
             movieAdapter.notifyDataSetChanged();
-            if(isTablet){
-                ((MovieClickedCallback) getActivity()).onMovieClicked(0, movieAdapter);
-            }
-
         }
 
         private String getJsonObject(InputStream in) throws IOException {
@@ -120,7 +125,7 @@ public class PopularMoviesFragment extends Fragment {
             BufferedReader reader = new BufferedReader(new InputStreamReader(in, "UTF-8"), 8);
 
             while ((line = reader.readLine()) != null) {
-                sb.append(line + "\n");
+                sb.append(line).append("\n");
             }
             return sb.toString();
         }

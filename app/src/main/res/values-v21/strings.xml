@@ -15,4 +15,6 @@
     <string name="user_review">User Reviews</string>
     <string name="no_user_review">No user reviews yet</string>
     <string name="myFav">My Favourites</string>
+    <string name="no_trailer_found">No trailer found</string>
+    <string name="trailers">Trailers</string>
 </resources>

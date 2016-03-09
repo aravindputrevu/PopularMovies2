@@ -1,7 +1,6 @@
-package com.aravind.popularmovies2;
+package com.aravind.popularmovies2.fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,6 +11,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import com.aravind.popularmovies2.Constants;
+import com.aravind.popularmovies2.MovieClickedCallback;
+import com.aravind.popularmovies2.R;
+import com.aravind.popularmovies2.adapter.MovieAdapter;
+import com.aravind.popularmovies2.model.Movie;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -21,8 +25,7 @@ import java.util.Map;
 
 public class FavoriteMovieFragment extends Fragment {
 
-    private static final String LOG = FavoriteMovieFragment.class.getSimpleName();
-    GridView gridView;
+    private GridView gridView;
     private MovieAdapter movieAdapter;
     private List<Movie> movieList = new ArrayList<Movie>();
 
@@ -56,7 +59,7 @@ public class FavoriteMovieFragment extends Fragment {
      * This method retrieves the movie from shared preferences
      */
     private void populateFavMovieListFromPrefs() {
-        SharedPreferences mPref = getActivity().getSharedPreferences("myprefs", Context.MODE_PRIVATE);
+        SharedPreferences mPref = getActivity().getSharedPreferences(Constants.SHARED_PREF_KEY, Context.MODE_PRIVATE);
         Map<String, String> movieMap = (Map<String, String>) mPref.getAll();
         Gson gson = new Gson();
         for (Map.Entry<String, String> entry : movieMap.entrySet()) {

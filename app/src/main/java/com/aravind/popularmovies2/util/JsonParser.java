@@ -1,8 +1,11 @@
-package com.aravind.popularmovies2;
+package com.aravind.popularmovies2.util;
 
 
-import android.media.Rating;
 import android.util.Log;
+
+import com.aravind.popularmovies2.model.Movie;
+import com.aravind.popularmovies2.model.Review;
+import com.aravind.popularmovies2.model.YTBTrailer;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -45,7 +45,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
+        android:layout_width="585dp"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -63,27 +63,27 @@
                 <LinearLayout
                     style="@style/Widget.CardContent"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:orientation="horizontal"
                     android:weightSum="1">
 
                     <TableLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="0.84">
 
                         <TableRow>
 
                             <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
                                 android:padding="3dip"
                                 android:text="@string/release_date"
                                 android:textStyle="bold" />
 
                             <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
                                 android:layout_marginLeft="100dip"
                                 android:padding="3dip"
                                 android:text="@string/vote_avg"
@@ -95,16 +95,16 @@
 
                             <TextView
                                 android:id="@+id/release_date"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
                                 android:gravity="left"
                                 android:padding="3dip"
                                 android:textStyle="italic" />
 
                             <TextView
                                 android:id="@+id/vote_count"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
                                 android:layout_marginLeft="100dip"
                                 android:gravity="left"
                                 android:padding="3dip"
@@ -127,7 +127,7 @@
                     android:orientation="horizontal"
                     android:id="@+id/ytb_linear_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent">
 
 
                 </LinearLayout>
@@ -144,19 +144,19 @@
                 <LinearLayout
                     style="@style/Widget.CardContent"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:padding="3dip"
                         android:text="@string/plot"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/plot"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:textSize="20sp"
                         android:textStyle="italic" />
                 </LinearLayout>
@@ -173,11 +173,11 @@
                 <LinearLayout
                     style="@style/Widget.CardContent"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:padding="3dip"
                         android:text="@string/user_review"
                         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
@@ -185,15 +185,15 @@
 
                     <TextView
                         android:id="@+id/author"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:padding="3dip"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/user_review"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:textSize="15sp"
                         android:textStyle="italic" />
                 </LinearLayout>

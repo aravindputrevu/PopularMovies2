@@ -1,7 +1,10 @@
-package com.aravind.popularmovies2;
+package com.aravind.popularmovies2.util;
 
 
 import android.net.Uri;
+
+import com.aravind.popularmovies2.BuildConfig;
+import com.aravind.popularmovies2.Constants;
 
 public class Util {
 

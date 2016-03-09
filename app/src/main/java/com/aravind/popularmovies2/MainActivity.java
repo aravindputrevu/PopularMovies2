@@ -9,14 +9,18 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.GridView;
+
+import com.aravind.popularmovies2.adapter.MovieAdapter;
+import com.aravind.popularmovies2.adapter.MoviePagerAdapter;
+import com.aravind.popularmovies2.fragments.MovieDetailsFragment;
+import com.aravind.popularmovies2.model.Movie;
 
 
-public class MainActivity extends AppCompatActivity implements MovieClickedCallback{
+public class MainActivity extends AppCompatActivity implements MovieClickedCallback {
 
 
-    boolean mTabletMode = false;
     private static final String MOVIE_DETAIL_FRAG_TAG = "DFTAG";
+    private boolean mTabletMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,8 +28,8 @@ public class MainActivity extends AppCompatActivity implements MovieClickedCallb
 
         setContentView(R.layout.activity_main);
 
-        if(findViewById(R.id.movie_detail_container) != null){
-            mTabletMode=true;
+        if (findViewById(R.id.movie_detail_container) != null) {
+            mTabletMode = true;
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -41,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements MovieClickedCallb
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
         final MoviePagerAdapter adapter = new MoviePagerAdapter
-                (getSupportFragmentManager(), tabLayout.getTabCount(),mTabletMode);
+                (getSupportFragmentManager(), tabLayout.getTabCount(), mTabletMode);
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -60,22 +64,6 @@ public class MainActivity extends AppCompatActivity implements MovieClickedCallb
 
             }
         });
-
-        /*if(mTabletMode) {
-            if (savedInstanceState == null) {
-                MovieDetailsFragment mf = new MovieDetailsFragment();
-                GridView gridView = (GridView) findViewById(R.id.movie_grid);
-                MovieAdapter movieAdapter = (MovieAdapter) gridView.getAdapter();
-                Movie m = movieAdapter.getItem(0);
-
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("movie_object", m);
-                mf.setArguments(bundle);
-
-                getSupportFragmentManager().beginTransaction().add(R.id.movie_detail_container, mf, MOVIE_DETAIL_FRAG_TAG).commit();
-
-            }
-        }*/
     }
 
     @Override
@@ -95,17 +83,16 @@ public class MainActivity extends AppCompatActivity implements MovieClickedCallb
     }
 
     @Override
-    public void onMovieClicked(int position,MovieAdapter movieAdapter) {
+    public void onMovieClicked(int position, MovieAdapter movieAdapter) {
 
-        if(!mTabletMode){
+        if (!mTabletMode) {
             Log.d("MovieAdapter", "Intent Started !!!");
-            Movie movieObject = (Movie) movieAdapter.getItem(position);
+            Movie movieObject = movieAdapter.getItem(position);
             Intent i = new Intent();
             i.setClassName("com.aravind.popularmovies2", "com.aravind.popularmovies2.MovieDetailsActivity");
             i.putExtra(getString(R.string.moveObject), movieObject);
             startActivity(i);
-        }
-        else{
+        } else {
             // It's a tablet, so update the movie detail fragment
             Bundle args = new Bundle();
             // Pass the selected Movie object to the MovieDetailFragment
@@ -113,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements MovieClickedCallb
             MovieDetailsFragment movieDetailsFragment = new MovieDetailsFragment();
             movieDetailsFragment.setArguments(args);
             this.getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.movie_detail_container, movieDetailsFragment, "DFTAG")
+                    .replace(R.id.movie_detail_container, movieDetailsFragment, MOVIE_DETAIL_FRAG_TAG)
                     .commit();
         }
     }

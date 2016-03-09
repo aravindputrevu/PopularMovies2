@@ -1,4 +1,4 @@
-package com.aravind.popularmovies2;
+package com.aravind.popularmovies2.adapter;
 
 
 import android.app.Activity;
@@ -9,11 +9,14 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
+import com.aravind.popularmovies2.Constants;
+import com.aravind.popularmovies2.R;
+import com.aravind.popularmovies2.model.Movie;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class MovieAdapter extends ArrayAdapter<Movie>{
+public class MovieAdapter extends ArrayAdapter<Movie> {
 
     private static final String LOG = MovieAdapter.class.getSimpleName();
 
@@ -34,7 +37,6 @@ public class MovieAdapter extends ArrayAdapter<Movie>{
 
         ImageView imageView = (ImageView) convertView.findViewById(R.id.movie_image);
         Picasso.with(this.getContext()).load(Constants.MOVIE_POSTER_PATH_SMALL + movie.getPosterPath()).placeholder(ContextCompat.getDrawable(this.getContext(), R.drawable.movie)).error(ContextCompat.getDrawable(this.getContext(), R.drawable.movie)).into(imageView);
-
 
 
         return convertView;
